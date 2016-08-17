@@ -36,7 +36,8 @@ dispatcher.onGet("/earth", function(req, res) {
 
     function switcher(mode) {
         switch (mode) {
-            case true:  // settings values for mars mode
+            case "mars":  // settings values for mars mode
+                console.log("There is so much sand here");
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
@@ -44,7 +45,8 @@ dispatcher.onGet("/earth", function(req, res) {
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
                 break
-            case false: // settings values for earth mode
+            case "earth": // settings values for earth mode
+                console.log("We are back on earth");
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
