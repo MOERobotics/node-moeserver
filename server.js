@@ -1,6 +1,6 @@
 var server     = require('node-http-server');
-var websock    = require("nodejs-websocket");
 var v4l2camera = require("v4l2camera");
+var dispatcher = require('httpdispatcher');
 
 var response
 //var cam = new v4l2camera.Camera("/dev/video0"); //Should we try to find it? What if it's on /dev/video1? What if we have multiple cameras?
@@ -21,38 +21,45 @@ server.deploy({
 });
 
 
-var server = websock.createServer( function (conn) {
-	console.log("New connection")
-	conn.on("text", function (str) {
-		console.log("Received "+str)
-        response = JSON.parse(str)
-        switch (response.gripcam) {
-            case true:  // settings values for mars mode
-            /*
+dispatcher.setStatic('imports');
+
+
+dispatcher.onGet("/mars", function(req, res) {
+  switcher("mars");
+
+});
+
+dispatcher.onGet("/earth", function(req, res) {
+  switcher("earth")
+
+});
+
+    function switcher(mode) {
+        switch (mode) {
+            case "mars":  // settings values for mars mode
+                console.log("There is so much sand here");
+                /*
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
                 cam.controlSet(id, value)
-            */
-                break
-            case false: // settings values for earth mode
-            /*
-                cam.controlSet(id, value)
-                cam.controlSet(id, value)
-                cam.controlSet(id, value)
-                cam.controlSet(id, value)
-                cam.controlSet(id, value)
-                cam.controlSet(id, value)
-            */
+                */
                 break;
-            default: 
+            case "earth": // settings values for earth mode
+                console.log("We are back on earth");
+                /*
+                cam.controlSet(id, value)
+                cam.controlSet(id, value)
+                cam.controlSet(id, value)
+                cam.controlSet(id, value)
+                cam.controlSet(id, value)
+                cam.controlSet(id, value)
+                */
+                break;
+            default:
                 console.log("idk wut u say");
                 break;
         }
-    }); //</ontext>
-	conn.on("close", function (code, reason) {
-		console.log("Connection closed")
-	})
-}).listen(8001)
+}
